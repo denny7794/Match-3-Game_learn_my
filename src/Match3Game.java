@@ -5,6 +5,8 @@
 
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 
 public class Match3Game {
@@ -41,6 +43,15 @@ public class Match3Game {
         canvasPanel.setBackground(Color.black);
         frame.getContentPane().add(BorderLayout.CENTER, canvasPanel);
 
+        frame.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                Ball clickedBall = gameBalls.whoIsClicked(e.getX(), e.getY());
+                System.out.println("balls x " + clickedBall.x  + " y " + clickedBall.y);
+            }
+        });
+
         frame.setVisible(true);
 
         randomColors = new Color[FIELD_HEIGHT * FIELD_WIDTH];
@@ -62,10 +73,15 @@ public class Match3Game {
             this.y = y;
 //            this.color = Color.GREEN;//getRandomColor();
 //            this.color = getRandomColor();
-            System.out.println(getRandomColor().toString());
+//            System.out.println(this.color.toString());
         }
 
-
+        boolean isClicked(int x, int y) {
+            if (x >= this.x*BALL_SIZE && x <= this.x*BALL_SIZE+BALL_SIZE && y >= this.y*BALL_SIZE && y <= this.y*BALL_SIZE+BALL_SIZE) {
+                return true;
+            }
+            return false;
+        }
 
         void paint(Graphics g) {
             g.setColor(color);
@@ -99,6 +115,17 @@ public class Match3Game {
                     balls[y][x].color = randomColors[i++];
                 }
             }
+        }
+
+        Ball whoIsClicked(int clickedX, int clickedY) {
+            for (int y = 0; y < FIELD_HEIGHT; y++) {
+                for (int x = 0; x < FIELD_WIDTH; x++) {
+                    if (balls[y][x].isClicked(clickedX, clickedY)) {
+                        return balls[y][x];
+                    }
+                }
+            }
+            return null;
         }
 
         void paint(Graphics g) {
