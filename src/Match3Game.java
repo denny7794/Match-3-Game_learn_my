@@ -4,14 +4,13 @@
  */
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 
 public class Match3Game {
 
     final String TITLE_OF_PROGRAM = "Match-3-Game";
-    final int BALL_RADIUS = 30;
+    final int BALL_SIZE = 30;
     final int FIELD_WIDTH = 6; // in balls
     final int FIELD_HEIGHT = 6;
     final int FIELD_DX = 6;
@@ -29,7 +28,7 @@ public class Match3Game {
     void go(){
         frame = new JFrame(TITLE_OF_PROGRAM);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(FIELD_WIDTH * BALL_RADIUS + FIELD_DX, FIELD_HEIGHT * BALL_RADIUS + FIELD_DY);
+        frame.setSize(FIELD_WIDTH * BALL_SIZE + FIELD_DX, FIELD_HEIGHT * BALL_SIZE + FIELD_DY);
         frame.setLocation(START_LOCATION, START_LOCATION);
         frame.setResizable(false);
 
@@ -62,6 +61,11 @@ public class Match3Game {
                 default:
                     return Color.BLACK;
             }
+        }
+
+        void paint(Graphics g) {
+            g.setColor(color);
+            g.fillOval(x * BALL_SIZE, y * BALL_SIZE, BALL_SIZE, BALL_SIZE);
         }
     }
 
