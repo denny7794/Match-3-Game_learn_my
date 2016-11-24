@@ -24,6 +24,7 @@ public class Match3Game {
     Random random = new Random();
     Delay delay = new Delay();
     Balls gameBalls;
+    Color[] randomColors;
 
     public static void main(String[] args) {
         new Match3Game().go();
@@ -42,6 +43,10 @@ public class Match3Game {
 
         frame.setVisible(true);
 
+        randomColors = new Color[FIELD_HEIGHT * FIELD_WIDTH];
+        for (int i = 0; i < FIELD_HEIGHT * FIELD_WIDTH; i++) {
+            randomColors[i] = getRandomColor();
+        }
         gameBalls = new Balls();
         while (!gameOver) {
             delay.wait(SHOW_DELAY);
@@ -50,31 +55,35 @@ public class Match3Game {
 
     class Ball {
         int x, y;
-        Color color;
+        Color color = Color.WHITE;
 
         public Ball(int x, int y){
             this.x = x;
             this.y = y;
-            this.color = Color.WHITE;//getRandomColor();
+//            this.color = Color.GREEN;//getRandomColor();
+//            this.color = getRandomColor();
+            System.out.println(getRandomColor().toString());
         }
 
-        Color getRandomColor() {
-            int type = random.nextInt(NUMBER_OF_COLORS-1)+1;
-            switch (type) {
-                case 1:
-                    return Color.RED;
-                case 2:
-                    return Color.GREEN;
-                case 3:
-                    return Color.BLUE;
-                default:
-                    return Color.BLACK;
-            }
-        }
+
 
         void paint(Graphics g) {
             g.setColor(color);
             g.fillOval(x * BALL_SIZE, y * BALL_SIZE, BALL_SIZE, BALL_SIZE);
+        }
+    }
+
+    public Color getRandomColor() {
+        int type = random.nextInt(NUMBER_OF_COLORS)+1;
+        switch (type) {
+            case 1:
+                return Color.RED;
+            case 2:
+                return Color.GREEN;
+            case 3:
+                return Color.BLUE;
+            default:
+                return Color.WHITE;
         }
     }
 
@@ -83,9 +92,11 @@ public class Match3Game {
 
         public Balls() {
             balls = new Ball[FIELD_HEIGHT][FIELD_WIDTH];
+            int i = 0;
             for (int y = 0; y < FIELD_HEIGHT; y++) {
                 for (int x = 0; x < FIELD_WIDTH; x++) {
                     balls[y][x] = new Ball(x, y);
+                    balls[y][x].color = randomColors[i++];
                 }
             }
         }
