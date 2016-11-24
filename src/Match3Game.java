@@ -17,6 +17,7 @@ public class Match3Game {
     final int FIELD_DX = 6;
     final int FIELD_DY = 28;
     final int START_LOCATION = 400;
+    final int NUMBER_OF_COLORS = 3;
     JFrame frame;
     Canvas canvasPanel = new Canvas();
     Random random = new Random();
@@ -36,6 +37,32 @@ public class Match3Game {
         frame.getContentPane().add(BorderLayout.CENTER, canvasPanel);
 
         frame.setVisible(true);
+    }
+
+    class Ball {
+        int x, y;
+        Color color;
+
+        public Ball(int x, int y){
+            this.x = x;
+            this.y = y;
+            this.color = getRandomColor();
+        }
+
+        Color getRandomColor() {
+            Color color;
+            int type = random.nextInt(NUMBER_OF_COLORS-1)+1;
+            switch (type) {
+                case 1:
+                    return Color.RED;
+                case 2:
+                    return Color.GREEN;
+                case 3:
+                    return Color.BLUE;
+                default:
+                    return Color.BLACK;
+            }
+        }
     }
 
     public class Canvas extends JPanel {
