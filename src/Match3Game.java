@@ -47,8 +47,9 @@ public class Match3Game {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                System.out.println("clicked x " + e.getX()  + " y " + e.getY());
                 Ball clickedBall = gameBalls.whoIsClicked(e.getX(), e.getY());
-                System.out.println("balls x " + clickedBall.x  + " y " + clickedBall.y);
+                System.out.println("balls x " + clickedBall.x  + " y " + clickedBall.y + " color " + clickedBall.color.toString());
             }
         });
 
@@ -77,7 +78,7 @@ public class Match3Game {
         }
 
         boolean isClicked(int x, int y) {
-            if (x >= this.x*BALL_SIZE && x <= this.x*BALL_SIZE+BALL_SIZE && y >= this.y*BALL_SIZE && y <= this.y*BALL_SIZE+BALL_SIZE) {
+            if (x >= this.x*BALL_SIZE+FIELD_DX-2 && x <= this.x*BALL_SIZE+BALL_SIZE+FIELD_DX-2 && y >= this.y*BALL_SIZE+FIELD_DY-2 && y <= this.y*BALL_SIZE+BALL_SIZE+FIELD_DY-2) {
                 return true;
             }
             return false;
