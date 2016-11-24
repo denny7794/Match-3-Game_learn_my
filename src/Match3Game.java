@@ -17,9 +17,13 @@ public class Match3Game {
     final int FIELD_DY = 28;
     final int START_LOCATION = 400;
     final int NUMBER_OF_COLORS = 3;
+    final int SHOW_DELAY = 350;
+    boolean gameOver = false;
     JFrame frame;
-    Canvas canvasPanel = new Canvas();
+    Canvas canvasPanel;
     Random random = new Random();
+    Delay delay = new Delay();
+    Balls gameBalls;
 
     public static void main(String[] args) {
         new Match3Game().go();
@@ -32,10 +36,16 @@ public class Match3Game {
         frame.setLocation(START_LOCATION, START_LOCATION);
         frame.setResizable(false);
 
+        canvasPanel = new Canvas();
         canvasPanel.setBackground(Color.black);
         frame.getContentPane().add(BorderLayout.CENTER, canvasPanel);
 
         frame.setVisible(true);
+
+        gameBalls = new Balls();
+        while (!gameOver) {
+            delay.wait(SHOW_DELAY);
+        }
     }
 
     class Ball {
@@ -45,11 +55,10 @@ public class Match3Game {
         public Ball(int x, int y){
             this.x = x;
             this.y = y;
-            this.color = getRandomColor();
+            this.color = Color.WHITE;//getRandomColor();
         }
 
         Color getRandomColor() {
-            Color color;
             int type = random.nextInt(NUMBER_OF_COLORS-1)+1;
             switch (type) {
                 case 1:
@@ -69,10 +78,40 @@ public class Match3Game {
         }
     }
 
+    class Balls {
+        Ball[][] balls;
+
+        public Balls() {
+            balls = new Ball[FIELD_HEIGHT][FIELD_WIDTH];
+            for (int y = 0; y < FIELD_HEIGHT; y++) {
+                for (int x = 0; x < FIELD_WIDTH; x++) {
+                    balls[y][x] = new Ball(x, y);
+                }
+            }
+        }
+
+        void paint(Graphics g) {
+            for (int y = 0; y < FIELD_HEIGHT; y++) {
+                for (int x = 0; x < FIELD_WIDTH; x++) {
+                    balls[y][x].paint(g);
+                }
+            }
+        }
+    }
+
+    class Delay {
+        void wait(int milliseconds) {
+            try {
+                Thread.sleep(milliseconds);
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+    }
+
     public class Canvas extends JPanel {
         @Override
         public void paint(Graphics g) {
             super.paint(g);
+            gameBalls.paint(g);
         }
     }
 }
