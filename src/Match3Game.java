@@ -21,11 +21,13 @@ public class Match3Game {
     final int NUMBER_OF_COLORS = 3;
     final int SHOW_DELAY = 350;
     boolean gameOver = false;
+    boolean firstClick = false, secondClick = false;
     JFrame frame;
     Canvas canvasPanel;
     Random random = new Random();
     Delay delay = new Delay();
     Balls gameBalls;
+    Ball firstBall, secondBall;
     Color[] randomColors;
 
     public static void main(String[] args) {
@@ -43,6 +45,7 @@ public class Match3Game {
         canvasPanel.setBackground(Color.black);
         frame.getContentPane().add(BorderLayout.CENTER, canvasPanel);
 
+
         frame.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -50,6 +53,25 @@ public class Match3Game {
                 System.out.println("clicked x " + e.getX()  + " y " + e.getY());
                 Ball clickedBall = gameBalls.whoIsClicked(e.getX(), e.getY());
                 System.out.println("balls x " + clickedBall.x  + " y " + clickedBall.y + " color " + clickedBall.color.toString());
+                if (!firstClick) {
+                    firstClick = true;
+                    firstBall = new Ball(clickedBall.x, clickedBall.y, clickedBall.color);
+                } else {
+                    if (firstBall.x - 1 == clickedBall.x || firstBall.x + 1 == clickedBall.x || firstBall.y - 1 == clickedBall.y || firstBall.y + 1 == clickedBall.y) {
+                        /*Color tempColor = clickedBall.color;
+                        clickedBall.color = firstBall.color;
+                        firstBall.color = tempColor;*/
+                        /*Ball tempBall;
+                        tempBall = new Ball(clickedBall.x, clickedBall.y, clickedBall.color);
+                        gameBalls[clickedBall.y][clickedBall.x] = new Ball(firstBall.x, firstBall.y, firstBall.color);
+                        gameBalls[firstBall.y][firstBall.x] = new Ball(tempBall.x, tempBall.y, tempBall.color);*/
+                        gameBalls.exchange(firstBall, clickedBall);
+                        firstClick = false;
+                    } else {
+                        firstBall = new Ball(clickedBall.x, clickedBall.y, clickedBall.color);
+                    }
+                }
+                canvasPanel.repaint();
             }
         });
 
@@ -75,6 +97,12 @@ public class Match3Game {
 //            this.color = Color.GREEN;//getRandomColor();
 //            this.color = getRandomColor();
 //            System.out.println(this.color.toString());
+        }
+
+        public Ball(int x, int y, Color color) {
+            this.x = x;
+            this.y = y;
+            this.color = color;
         }
 
         boolean isClicked(int x, int y) {
@@ -127,6 +155,16 @@ public class Match3Game {
                 }
             }
             return null;
+        }
+
+        void exchange(Ball firstBall, Ball secondBall) {
+            Ball tempBall = new Ball(0,0);
+            /*tempBall = new Ball(secondBall.x, secondBall.y, secondBall.color);
+            balls[secondBall.y][secondBall.x] = new Ball(firstBall.x, firstBall.y, firstBall.color);
+            balls[firstBall.y][firstBall.x] = new Ball(tempBall.x, tempBall.y, tempBall.color);*/
+            tempBall.color = secondBall.color;
+            balls[secondBall.y][secondBall.x].color = balls[firstBall.y][firstBall.x].color;
+            balls[firstBall.y][firstBall.x].color = tempBall.color;
         }
 
         void paint(Graphics g) {
