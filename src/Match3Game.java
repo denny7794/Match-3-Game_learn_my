@@ -69,8 +69,8 @@ public class Match3Game {
                         gameBalls.exchange(firstBall, clickedBall);
                         canvasPanel.repaint();
                         gameBalls.checkLines();
-//                        canvasPanel.repaint();
-//                        gameBalls.checkEmptyBalls();
+                        canvasPanel.repaint();
+                        gameBalls.checkEmptyBalls2();
                         canvasPanel.repaint();
                         firstClick = false;
                     } else {
@@ -246,6 +246,22 @@ public class Match3Game {
                     checkVerticalLines(x, y+1);
                 } else {
                     return;
+                }
+            }
+        }
+
+        void checkEmptyBalls2() {
+            for (int x = 0; x < FIELD_WIDTH; x++) {
+                for (int y = FIELD_HEIGHT-1; y >= 0; y--) {
+                    while (balls[y][x].color == Color.WHITE) {
+                        for (int i = y; i >= 0; i--) {
+                            if (i > 0){
+                                balls[i][x].color = balls[i - 1][x].color;
+                            } else {
+                                nextBallFromUp(x, i); //если достигли верха
+                            }
+                        }
+                    }
                 }
             }
         }
