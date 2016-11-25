@@ -57,7 +57,7 @@ public class Match3Game {
                     firstClick = true;
                     firstBall = new Ball(clickedBall.x, clickedBall.y, clickedBall.color);
                 } else {
-                    if (firstBall.x - 1 == clickedBall.x || firstBall.x + 1 == clickedBall.x || firstBall.y - 1 == clickedBall.y || firstBall.y + 1 == clickedBall.y) {
+                    if (firstBall.y == clickedBall.y && (firstBall.x - 1 == clickedBall.x || firstBall.x + 1 == clickedBall.x) || firstBall.x == clickedBall.x && (firstBall.y - 1 == clickedBall.y || firstBall.y + 1 == clickedBall.y)) {
                         /*Color tempColor = clickedBall.color;
                         clickedBall.color = firstBall.color;
                         firstBall.color = tempColor;*/
