@@ -70,7 +70,7 @@ public class Match3Game {
                         canvasPanel.repaint();
                         gameBalls.checkLines();
                         canvasPanel.repaint();
-                        gameBalls.checkEmptyBalls2();
+                        gameBalls.checkEmptyBalls();
                         canvasPanel.repaint();
                         firstClick = false;
                     } else {
@@ -250,7 +250,7 @@ public class Match3Game {
             }
         }
 
-        void checkEmptyBalls2() {
+        void checkEmptyBalls2() { // вариант без рекурсии
             for (int x = 0; x < FIELD_WIDTH; x++) {
                 for (int y = FIELD_HEIGHT-1; y >= 0; y--) {
                     while (balls[y][x].color == Color.WHITE) {
@@ -266,7 +266,7 @@ public class Match3Game {
             }
         }
 
-        void checkEmptyBalls() {
+        void checkEmptyBalls() { // вариант с рекурсией
             for (int x = 0; x < FIELD_WIDTH; x++) {
                 for (int y = FIELD_HEIGHT-1; y >= 0; y--) {
                     if (balls[y][x].color == Color.WHITE) {
@@ -283,9 +283,9 @@ public class Match3Game {
             }
             for (int i = y; i >= 0; i--) {
                 if (i > 0){
-                    balls[y][x].color = balls[y - 1][x].color;
+                    balls[i][x].color = balls[i - 1][x].color;
                 } else {
-                    nextBallFromUp(x, y); //если достигли верха
+                    nextBallFromUp(x, i); //если достигли верха
                 }
             }
 
