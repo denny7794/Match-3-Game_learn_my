@@ -18,7 +18,7 @@ public class Match3Game {
     final int FIELD_DX = 6;
     final int FIELD_DY = 28;
     final int START_LOCATION = 400;
-    final int NUMBER_OF_COLORS = 3;
+    final int NUMBER_OF_COLORS = 5;
     final int SHOW_DELAY = 350;
     boolean gameOver = false;
     boolean firstClick = false, secondClick = false;
@@ -127,6 +127,10 @@ public class Match3Game {
                 return Color.GREEN;
             case 3:
                 return Color.BLUE;
+            case 4:
+                return Color.YELLOW;
+            case 5:
+                return Color.CYAN;
             default:
                 return Color.WHITE;
         }
