@@ -201,6 +201,22 @@ public class Match3Game {
                     countBallsX = 1;
                 }
             }
+            for (int x = 0; x < FIELD_WIDTH; x++) {
+                int y = 0;
+                while (y < FIELD_HEIGHT-2) {
+                    checkVerticalLines(x, y);
+                    if (countBallsY >= 3) {
+                        for (int i = y; i < y+countBallsY; i++) {
+//                            balls[y][i].color = Color.WHITE;
+                            linedBalls.balls[i][x] = new Ball(i, x, Color.WHITE);
+                        }
+                    }
+                    y = y + countBallsY;
+                    countBallsY = 1;
+                }
+            }
+
+
             for (int y = 0; y < FIELD_HEIGHT; y++) {
                 for (int x = 0; x < FIELD_WIDTH; x++) {
                     if (linedBalls.balls[y][x] != null){
@@ -215,6 +231,16 @@ public class Match3Game {
                 if (balls[y][x].color == balls[y][x + 1].color) {
                     countBallsX++;
                     checkHorizontalLines(x + 1, y);
+                } else {
+                    return;
+                }
+            }
+        }
+        void checkVerticalLines(int x, int y){
+            if (balls[y][x].y < FIELD_HEIGHT-1) {
+                if (balls[y][x].color == balls[y+1][x].color) {
+                    countBallsY++;
+                    checkVerticalLines(x, y+1);
                 } else {
                     return;
                 }
