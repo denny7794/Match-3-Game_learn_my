@@ -22,11 +22,12 @@ public class Match3Game {
     final int SHOW_DELAY = 350;
     boolean gameOver = false;
     boolean firstClick = false, secondClick = false;
+    int countBallsX = 1, countBallsY = 1;
     JFrame frame;
     Canvas canvasPanel;
     Random random = new Random();
     Delay delay = new Delay();
-    Balls gameBalls;
+    Balls gameBalls, linedBallsX, linedBallsY;
     Ball firstBall, secondBall;
     Color[] randomColors;
 
@@ -66,12 +67,15 @@ public class Match3Game {
                         gameBalls[clickedBall.y][clickedBall.x] = new Ball(firstBall.x, firstBall.y, firstBall.color);
                         gameBalls[firstBall.y][firstBall.x] = new Ball(tempBall.x, tempBall.y, tempBall.color);*/
                         gameBalls.exchange(firstBall, clickedBall);
+                        canvasPanel.repaint();
+                        gameBalls.checkLines();
                         firstClick = false;
                     } else {
                         firstBall = new Ball(clickedBall.x, clickedBall.y, clickedBall.color);
                     }
                 }
-                canvasPanel.repaint();
+
+
             }
         });
 
@@ -82,6 +86,8 @@ public class Match3Game {
             randomColors[i] = getRandomColor();
         }
         gameBalls = new Balls();
+        linedBallsX = new Balls();
+        linedBallsY = new Balls();
         while (!gameOver) {
             delay.wait(SHOW_DELAY);
         }
@@ -169,6 +175,33 @@ public class Match3Game {
             tempBall.color = secondBall.color;
             balls[secondBall.y][secondBall.x].color = balls[firstBall.y][firstBall.x].color;
             balls[firstBall.y][firstBall.x].color = tempBall.color;
+        }
+
+        void checkLines() {
+            for (int y = 0; y < FIELD_HEIGHT; y++) {
+                int x = 0;
+                while (x < FIELD_WIDTH-2) {
+                    checkHorizontalLines(x, y);
+                    if (countBallsX >= 3) {
+                        for (int i = x; i < x+countBallsX; i++) {
+                            balls[y][i].color = Color.WHITE;
+                        }
+                    }
+                    x = x + countBallsX;
+                    countBallsX = 1;
+                }
+            }
+        }
+
+        void checkHorizontalLines(int x, int y){
+            if (balls[y][x].x < FIELD_WIDTH-1) {
+                if (balls[y][x].color == balls[y][x + 1].color) {
+                    countBallsX++;
+                    checkHorizontalLines(x + 1, y);
+                } else {
+                    return;
+                }
+            }
         }
 
         void paint(Graphics g) {
