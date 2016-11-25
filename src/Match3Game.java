@@ -27,7 +27,7 @@ public class Match3Game {
     Canvas canvasPanel;
     Random random = new Random();
     Delay delay = new Delay();
-    Balls gameBalls, linedBallsX, linedBallsY;
+    Balls gameBalls, linedBalls;//X, linedBallsY;
     Ball firstBall, secondBall;
     Color[] randomColors;
 
@@ -86,8 +86,8 @@ public class Match3Game {
             randomColors[i] = getRandomColor();
         }
         gameBalls = new Balls();
-        linedBallsX = new Balls();
-        linedBallsY = new Balls();
+        linedBalls = new Balls();
+//        linedBallsY = new Balls();
         while (!gameOver) {
             delay.wait(SHOW_DELAY);
         }
@@ -156,6 +156,14 @@ public class Match3Game {
             }
         }
 
+        void zeroInint(){
+            for (int y = 0; y < FIELD_HEIGHT; y++) {
+                for (int x = 0; x < FIELD_WIDTH; x++) {
+                    balls[y][x] = null;
+                }
+            }
+        }
+
         Ball whoIsClicked(int clickedX, int clickedY) {
             for (int y = 0; y < FIELD_HEIGHT; y++) {
                 for (int x = 0; x < FIELD_WIDTH; x++) {
@@ -178,17 +186,26 @@ public class Match3Game {
         }
 
         void checkLines() {
+            linedBalls.zeroInint();
             for (int y = 0; y < FIELD_HEIGHT; y++) {
                 int x = 0;
                 while (x < FIELD_WIDTH-2) {
                     checkHorizontalLines(x, y);
                     if (countBallsX >= 3) {
                         for (int i = x; i < x+countBallsX; i++) {
-                            balls[y][i].color = Color.WHITE;
+//                            balls[y][i].color = Color.WHITE;
+                            linedBalls.balls[y][i] = new Ball(y, i, Color.WHITE);
                         }
                     }
                     x = x + countBallsX;
                     countBallsX = 1;
+                }
+            }
+            for (int y = 0; y < FIELD_HEIGHT; y++) {
+                for (int x = 0; x < FIELD_WIDTH; x++) {
+                    if (linedBalls.balls[y][x] != null){
+                        balls[y][x].color = Color.WHITE;
+                    }
                 }
             }
         }
